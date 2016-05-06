@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script>
+var contents = [
+  {
+    bg: 'GPB-grouplist-history-folded.png',
+    hilites: [
+      {hl: [310, 140, 1260, 610], doc: "<p>Welcome to the Facebook Group Post Butler extension. The main thing happens here, in the group list page.</p>"},
+      {hl: [1510, 20, 1576, 52], doc: "<p>This is the icon. Click it to bring up the popup.</p>"},
+    ]
+  },
+  {
+    bg: 'GPB-grouplist-history-folded.png',
+    hilites: [
+      {hl: [310, 244, 1260, 284], doc: "<p>The groups you're a member of and administrate are all regrouped in categories maintained by the extension.</p>"
+                                     + "<p>Once a group is loaded by Facebook and displayed here, clicking on it will open it in a new window. This is "
+                                     + "so you don't lose track of what you were doing on this page, and also to avoid reloading the whole group list "
+                                     + "every time. Facebook loads groups 30 by 30, and for a few years now has forbidden fetching the complete list "
+                                     + "of groups via their API. The extension loads all the groups automatically, but it still takes some time.</p>"
+                                     + "<p>Notice the blue box displaying a timestamp. It indicates when you last posted in this group. "
+                                     + "Inside a category, groups are sorted by last post date, most recent last.</p>"},
+    ]
+  },
+  {
+    bg: 'GPB-grouplist-history-folded.png',
+    hilites: [
+      {hl: [760, 150, 954, 180], doc: "<p>You can add categories by<br/>entering their name here.</p><p>Just press enter and voilà.</p>"},
+      {hl: [1030, 150, 1240, 180], doc: "<p>This button shows the elapsed time<br/>since your last post. If you click it, it<br/>toggles the "
+                                      + "display of a history of your<br/>post timestamps."},
+      {hl: [326, 189, 527, 242], doc: "<p>The categories are organized as tabs.</p>"
+                                    + "<p>Click on a category name to display the groups it contains.</p>"
+                                    + "<p>By default, only the category <em>uncategorized</em> exists. Any new group lands in this category.</p>"
+                                    + "<p>You can rename a category (NOT <em>uncategorized</em>) by double-clicking on its name.</p>"}
+    ]
+  },
+  {
+    bg: 'GPB-grouplist-history.png',
+    hilites: [
+      {hl: [310, 180, 1260, 350], doc: "<p>This is the post timestamp history. You can use the buttons to scroll back and forth in time, and also change the units displayed (year, month, day, hour).</p>"},
+    ]
+  },
+  {
+    bg: 'GPB-grouplist-selecting.png',
+    hilites: [
+      {hl: [310, 420, 1260, 742], doc: "<p>You can move groups to other categories by dragging them to the desired category tab.</p>"
+                                     + "<p>When pressing SHIFT, you can select multiple groups by dragging a selection rectangle. "
+                                     + "Press both SHIFT and CONTROL to select and deselect additional groups. If multiple groups "
+                                     + "are selected, dropping one of them into a category will move the whole selection to this "
+                                     + "category.</p>"
+                                     + "<p>Changing the displayed category will deselect any selected group.</p>"},
+    ]
+  },
+  {
+    bg: 'GPB-group-and-popup.png',
+    hilites: [
+      {hl: [190, 0, 400, 30], doc: "I clicked on this group in the group list page, and now it is open in this new tab."},
+    ]
+  },
+  {
+    bg: 'GPB-group-and-popup.png',
+    hilites: [
+      {hl: [1028, 57, 1564, 670], doc: "<p>Since we're about to introduce the <em>Promo subjects</em>, we may as well introduce the extension popup now. Click the icon to toggle it.</p>"
+                                     + "<p>The popup is where you can tell the extension what you want to promote, as well as backup and import the extension data.</p>"},
+    ]
+  },
+  {
+    bg: 'GPB-group-and-popup.png',
+    hilites: [
+      {hl: [1170, 75, 1347, 98], doc: "<p>These buttons allow you to export and import the extension data (categories, promo subjects, timestamp history).</p>"},
+    ]
+  },
+  {
+    bg: 'GPB-group-and-popup.png',
+    hilites: [
+      {hl: [1041, 137, 1546, 231], doc: "<p>This is a <em>Promo subject</em>. It is given a name, applies to a certain number of categories, and features a number of canned texts to make your promotion work easier.</p>"},
+    ]
+  },
+  {
+    bg: 'GPB-group-and-popup.png',
+    hilites: [
+      {hl: [1467, 139, 1533, 170], doc: "<p>These buttons allow you to edit this <em>Promo subject</em> and delete it.</p>"},
+      {hl: [1033, 107, 1198, 138], doc: "<p>This is where you want to click to create a new <em>Promo subject</em>.</p>"},
+    ]
+  },
+  {
+    bg: 'GPB-group-and-popup-editing-promo.png',
+    hilites: [
+      {hl: [1028, 105, 1564, 560], doc: "<p>This is the form to add or modify a <em>Promo subject</em>.</p>"},
+    ]
+  },
+  {
+    bg: 'GPB-group-and-popup.png',
+    hilites: [
+      {hl: [479, 400, 982, 725], doc: "<p>Now back to the Facebook group page.</p>"},
+    ]
+  },
+  {
+    bg: 'GPB-group-and-popup.png',
+    hilites: [
+      {hl: [483, 402, 807, 443], doc: "<p>This is a reminder of which category you put this group in, as well as how long ago you last posted in it.</p>"},
+      {hl: [483, 532, 982, 722], doc: "<p>The <em>Promo subjects</em> that apply in the group's category appear here as tabs.<br/>Clicking on a canned text will copy it to the clipboard.</p>"},
+    ]
+  },
+  {
+    bg: 'GPB-group-and-popup.png',
+    hilites: [
+      {hl: [483, 470, 982, 523], doc: "<p>You can now paste the canned text here and edit the content. When you hit <em>Submit</em>, the extension will keep track of the timestamp, update "
+                                    + "the post timestamp history, and move this group to the bottom of its category.</p>"
+                                    + "<p>You can then close this tab and move on to the next group where you want to promote.</p>"},
+    ]
+  },
+  {
+    bg: 'GPB-group-and-popup.png',
+    hilites: [
+      {hl: [1050, 620, 1218, 659], doc: "<p>Finally, if you like this extension and find it useful, you can support the developer and his family by making a donation using this button!</p>"},
+    ]
+  },
+];
+
+var current;
+
+function set_content(index) {
+  var cts = contents[index];
+  $('#content').css({'background': `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("${cts.bg}")`}).empty();
+  $(cts.hilites).each(function(i, h) {
+    var hl = $(`<div class="hl"></div>`).css({
+      top: h.hl[1],
+      left: h.hl[0],
+      width: h.hl[2] - h.hl[0],
+      height: h.hl[3] - h.hl[1],
+      'background-image': `url("${cts.bg}")`,
+      'background-position': `-${h.hl[0]}px -${h.hl[1]}px`
+    });
+    $('#content').append(hl);
+    var doc = $(`<div class="doc">${h.doc}</div>`).css({top: h.hl[3] + 20, left: h.hl[0], 'max-width': Math.min(800, 1.5 * (h.hl[2] - h.hl[0]))});
+    $('#content').append(doc);
+    doc.css({left: h.hl[0] + .5 * (h.hl[2] - h.hl[0] - doc.width())});
+    console.log(doc.width());
+    $('ul > li > a.active').removeClass('active');
+    $('ul > li > a').eq(index).addClass('active');
+  });
+  current = index;
+}
+
+function next() {
+  if (current < contents.length - 1) {
+    set_content(current + 1);
+  }
+}
+
+function previous() {
+  if (current > 0) {
+    set_content(current - 1);
+  }
+}
+    </script>
+    <style>
+ul {
+  list-style-type: none;
+  margin: 8px 0 0 0;
+}
+
+li {
+  display: inline-block;
+  padding: 4px 8px;
+}
+
+li > a {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  border: 1px solid white;
+  background: rgba(255, 255, 255, .5);
+}
+
+li > a.active {
+  background: white;
+}
+
+#list {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 1600px;
+  text-align: center;
+}
+
+#content {
+  font-family: helvetica, sans-serif;
+  position: relative;
+  width: 1600px;
+  height: 900px;
+  background-color: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  background-position: top left;
+}
+
+.hl {
+  border: 5px solid rgba(255, 36, 60, .8);
+  border-radius: 16px;
+  position: absolute;
+  background: none;
+  background-origin: border-box;
+}
+
+.doc {
+  background: rgba(255, 255, 255, .95);
+  position: absolute;
+  color: black;
+  padding: .25em .5em;
+}
+
+p {
+  margin: .5em;
+}
+
+.doc:after {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: rgba(255, 255, 255, .9);
+	border-width: 12px;
+	margin-left: -12px;
+}
+    </style>
+  </head>
+  <body>
+    <div id="content"></div>
+    <div id="list">
+      <ul>
+      </ul>
+    </div>
+    <script>
+    var ul = $('ul');
+    for (var i = 0; i < contents.length; ++i) {
+      ul.append($(`<li><a href="#" onclick="set_content(${i})"></a></li>`));
+    }
+    set_content(0);
+    $('#content').on('click', function(e) { console.log(e.offsetX, e.offsetY); });
+    $(document).on('keydown', function(e) {
+      // console.log(e.keyCode);
+      if ([8, 33, 37, 38].indexOf(e.keyCode) != -1) {
+        previous();
+      } else if ([13, 32, 34, 39, 40].indexOf(e.keyCode) != -1) {
+        next();
+      }
+      e.preventDefault();
+      e.stopPropagation();
+    });
+    </script>
+  </body>
+</html>
